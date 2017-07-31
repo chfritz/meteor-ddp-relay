@@ -1,14 +1,16 @@
 Allows relaying a server-to-server DDP connection to a client.
 
+![Figure](https://github.com/chfritz/meteor-ddp-relay/raw/master/ddp-relay-figure.png)
+
 ### Problem
-App A's client would like to use collections of App B, but App A's client may not have network access to App B's server.
+App A's client would like to use collections of App B, but App A's client may not have network access to App B's server (red arrow in the figure).
 
 ### Solution
-App A requests its server to establish a DDP connection to App B's server, and to relay a certain publication. That's what this package facilitates.
+App A requests its server to establish a DDP connection to App B's server, and to relay a certain publication (green arrows). That's what this package facilitates.
 
 ### Documentation
 
-All the package does is add one Meteor method called "relay".
+All you need to do as a user in Client A is to call the one Meteor method added by this package called "relay".
 
 ```js
 Meteor.call("relay", request, callback);
