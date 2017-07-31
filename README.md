@@ -13,7 +13,7 @@ App A requests its server to establish a DDP connection to App B's server, and t
 All you need to do as a user in Client A is to call the one Meteor method added by this package called "relay".
 
 ```js
-Meteor.call("relay", request, callback);
+Meteor.call("ddp-relay", request, callback);
 ```
 Make request to relay `request.publication` on `request.server`, using collection `request.collectionName`. After calling this, you can subscribe to the synced collection using:
 ```js

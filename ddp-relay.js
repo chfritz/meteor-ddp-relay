@@ -9,7 +9,7 @@ Meteor.methods({
       const collection = new Mongo.Collection(request.collectionName);
       Meteor.subscribe(request.server + "/" + request.publication);
     */
-    relay(request) {
+    "ddp-relay"(request) {
       const name = request.server + ":" + request.publication;
       if (!collections[name]) {
         const server = DDP.connect(request.server);
