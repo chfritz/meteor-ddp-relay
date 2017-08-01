@@ -10,13 +10,13 @@ App A requests its server to establish a DDP connection to App B's server, and t
 
 ### Documentation
 
-All you need to do as a user in Client A is to call the one Meteor method added by this package called "relay".
+All you need to do as a user in Client A is to call the one Meteor method added by this package called "ddp-relay". It give you back the name of the publication it created on the server:
 
 ```js
-Meteor.call("ddp-relay", request, callback);
-```
-Make request to relay `request.publication` on `request.server`, using collection `request.collectionName`. After calling this, you can subscribe to the synced collection using:
-```js
-const collection = new Mongo.Collection(request.collectionName);
-Meteor.subscribe(request.server + "/" + request.publication);
+// Make request to relay `request.publication` on `request.server`, using collection `request.collectionName`
+Meteor.call("ddp-relay", request, (err, name) => {
+  // Then subscribe as usual:
+  const collection = new Mongo.Collection(request.collectionName);
+  Meteor.subscribe(name);
+});
 ```
