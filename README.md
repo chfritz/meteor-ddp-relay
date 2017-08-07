@@ -14,9 +14,14 @@ All you need to do as a user in Client A is to call the one Meteor method added 
 
 ```js
 // Make request to relay `request.publication` on `request.server`, using collection `request.collectionName`
-Meteor.call("ddp-relay", request, (err, name) => {
+Meteor.call("ddp-relay", {
+    publication: "items", // name of publication on App B's server
+    server: "http://example.com:3000", // App B's server
+    collectionName: "items"
+  }), (err, name) => {
+  
   // Then subscribe as usual:
-  const collection = new Mongo.Collection(request.collectionName);
-  Meteor.subscribe(name);
+  const collection = new Mongo.Collection("items"); // request.collectionName
+  Meteor.subscribe(name); // name is the name of the new publication (within App A)
 });
 ```
