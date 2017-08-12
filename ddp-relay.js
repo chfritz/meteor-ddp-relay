@@ -6,6 +6,7 @@ const collections = {};
 const connections = {};
 
 Meteor.methods({
+
     /** request to relay request.publication on request.server, using collection
       request.collectionName, providing request.subscriptionArgs (array) when
       subscribing to the remote publication. The array request.subscriptionArgs
@@ -19,7 +20,7 @@ Meteor.methods({
       The method pools connections, so if more than one ddp-relay request is
       sent for the same server, the existing connection is reused.
     */
-    "ddp-relay"(request) {
+    "ddp-relay-subscribe"(request) {
       const name = request.server + ":" + request.publication;
       if (!collections[name]) {
         if (!connections[request.server]) {
@@ -54,5 +55,18 @@ Meteor.methods({
         console.log("relay", name, "is already defined; ignoring request.");
       }
       return name;
+    },
+
+    /** make a method call to the specified server and method */
+    "ddp-relay-call"(server, method, ...args) {
+      if (!connections[server]) {
+        connections[server] = DDP.connect(server);
+      }
+
+      // since the remote server may not be responsive or the method maye
+      // take some time, we don't want to block ourselved for it
+      this.unblock();
+
+      return connections[server].call(method, ...args);
     }
   });
